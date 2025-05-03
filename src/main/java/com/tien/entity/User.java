@@ -1,5 +1,6 @@
 package com.tien.entity;
 
+import com.tien.security.entity.RefreshToken;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,6 +31,8 @@ public class User {
     @Column(nullable = false)
     private String fullName;
 
+    private String avatar;
+
     private String email;
 
     private String phoneNumber;
@@ -40,8 +43,11 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role; // CUSTOMER / ADMIN
 
-    private LocalDateTime createdAt;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)  // Quan hệ một-một với RefreshToken
+    private RefreshToken refreshToken;  // Mỗi User có một RefreshToken duy nhất
 
-    private LocalDateTime updatedAt;
+//    private LocalDateTime createdAt;
+//
+//    private LocalDateTime updatedAt;
 
 }

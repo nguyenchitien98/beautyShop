@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "categories")
 @Data
@@ -20,4 +22,6 @@ public class Category {
 
     @Column(nullable = false, unique = true)
     private String name;
+
+    private String description;
 }

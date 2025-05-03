@@ -1,7 +1,9 @@
 package com.tien.controller;
 
+import com.tien.dto.request.ProductRequest;
 import com.tien.entity.Product;
 import com.tien.service.ProductService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +17,7 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping
-    public Product createProduct(@RequestBody Product product) {
+    public Product createProduct(@Valid @RequestBody ProductRequest product) {
         return productService.createProduct(product);
     }
 

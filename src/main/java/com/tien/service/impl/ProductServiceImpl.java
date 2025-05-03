@@ -1,6 +1,9 @@
 package com.tien.service.impl;
 
+import com.tien.dto.request.ProductRequest;
+import com.tien.entity.Category;
 import com.tien.entity.Product;
+import com.tien.repository.CategoryRepository;
 import com.tien.repository.ProductRepository;
 import com.tien.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -13,9 +16,21 @@ import java.util.List;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
 
     @Override
-    public Product createProduct(Product product) {
+    public Product createProduct(ProductRequest productRequest) {
+        Category category = categoryRepository.findById(productRequest.getCategoryId())
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+
+        Product product = Product.builder()
+                .name(productRequest.getName())
+                .description(productRequest.getDescription())
+                .price(productRequest.getPrice())
+                .stockQuantity(productRequest.getStockQuantity())
+                .imageUrl(productRequest.getImageUrl())
+                .category(category)
+                .build();
         return productRepository.save(product);
     }
 

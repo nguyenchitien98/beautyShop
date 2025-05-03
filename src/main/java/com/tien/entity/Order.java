@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -23,12 +24,14 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDateTime createdAt;
-
     private Double totalAmount;
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status; // PENDING, PROCESSING, COMPLETED, CANCELLED
+
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
