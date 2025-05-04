@@ -1,8 +1,10 @@
 package com.tien.controller;
 
 import com.tien.entity.Category;
+import com.tien.payload.ApiResponse;
 import com.tien.service.CategoryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,12 +17,24 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @PostMapping
-    public Category createCategory(@RequestBody Category category) {
-        return categoryService.createCategory(category);
+    public ResponseEntity<ApiResponse<?>> createCategory(@RequestBody Category category) {
+        Category newCategory = categoryService.createCategory(category);
+        return ResponseEntity.ok(
+                ApiResponse.builder()
+                        .success(true)
+                        .message("Created category successfully")
+                        .data(newCategory)
+                        .build());
     }
 
     @GetMapping
-    public List<Category> getAllCategories() {
-        return categoryService.getAllCategories();
+    public ResponseEntity<ApiResponse<?>>  getAllCategories() {
+        List<Category> listCategory = categoryService.getAllCategories();
+        return ResponseEntity.ok(
+                ApiResponse.builder()
+                        .success(true)
+                        .message("Get All Categories")
+                        .data(listCategory)
+                        .build());
     }
 }
