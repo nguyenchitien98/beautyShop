@@ -2,7 +2,9 @@ package com.tien.controller;
 
 import com.tien.dto.request.LoginRequest;
 import com.tien.dto.request.UserRegisterRequest;
+import com.tien.payload.ApiCode;
 import com.tien.payload.ApiResponse;
+import com.tien.payload.ApiResponseBuilder;
 import com.tien.security.entity.RefreshToken;
 import com.tien.security.model.CustomUserDetails;
 import com.tien.entity.Role;
@@ -16,6 +18,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -42,7 +45,9 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody UserRegisterRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
-            return ResponseEntity.badRequest().body("Email already exists!");
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(ApiResponseBuilder.error(ApiCode.EMAIL_ALREADY_EXISTS));
+//            return ResponseEntity.badRequest().body("Email already exists!");
         }
 
         User user = User.builder()

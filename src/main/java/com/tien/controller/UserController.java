@@ -1,16 +1,16 @@
 package com.tien.controller;
 
 import com.tien.dto.request.ChangePasswordRequest;
+import com.tien.dto.request.CreateUserRequest;
 import com.tien.dto.request.UpdateProfileRequest;
-import com.tien.dto.response.ApiResponseBuilder;
 import com.tien.dto.response.UserProfileResponse;
 import com.tien.payload.ApiCode;
+import com.tien.payload.ApiResponseBuilder;
 import com.tien.security.model.CustomUserDetails;
 import com.tien.entity.User;
 import com.tien.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +25,9 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public User createUser(@Valid @RequestBody User user) {
-        return userService.createUser(user);
+    public ResponseEntity<?> createUser(@Valid @RequestBody CreateUserRequest userRequest) {
+        User user = userService.createUser(userRequest);
+        return ResponseEntity.ok(ApiResponseBuilder.success(user));
     }
 
     @GetMapping("/{id}")
@@ -42,24 +43,28 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> getAllUsers() {
-        return userService.getAllUsers();
+    public ResponseEntity<?> getAllUsers() {
+        List<User> userList = userService.getAllUsers();
+        return ResponseEntity.ok(ApiResponseBuilder.success(userList));
     }
 
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
+    public ResponseEntity<?> deleteUser(@PathVariable Long id) {
+         userService.deleteUser(id);
+         return ResponseEntity.ok(ApiResponseBuilder.success(ApiCode.DELETE_USER_SUCCESS));
+//         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/profile")
-    public ResponseEntity<UserProfileResponse> updateProfile(@Valid @RequestBody UpdateProfileRequest request, @AuthenticationPrincipal CustomUserDetails userDetails) {
+    public ResponseEntity<?> updateProfile(@Valid @RequestBody UpdateProfileRequest request, @AuthenticationPrincipal CustomUserDetails userDetails) {
         UserProfileResponse updatedUser = userService.updateProfile(userDetails.getId(), request);
-        return ResponseEntity.ok(updatedUser);
+        return ResponseEntity.ok(ApiResponseBuilder.success(updatedUser));
     }
 
     @PutMapping("/change-password")
-    public ResponseEntity<String> changePassword(@Valid @RequestBody ChangePasswordRequest request, @AuthenticationPrincipal CustomUserDetails userDetails) {
+    public ResponseEntity<?> changePassword(@Valid @RequestBody ChangePasswordRequest request, @AuthenticationPrincipal CustomUserDetails userDetails) {
         userService.changePassword(userDetails.getId(), request);
-        return ResponseEntity.ok("Đổi mật khẩu thành công!");
+        return ResponseEntity.ok(ApiResponseBuilder.success(ApiCode.CHANGE_PASSWORD_SUCCESS));
+//        return ResponseEntity.ok("Đổi mật khẩu thành công!");
     }
 }

@@ -19,6 +19,15 @@ public class ApiResponseBuilder {
                 .build();
     }
 
+    public static <T> ApiResponse<T> success(ApiCode apiCode) {
+        return ApiResponse.<T>builder()
+                .success(true)
+                .code(apiCode.getCode())
+                .message(apiCode.getMessage())
+                .data(null)
+                .build();
+    }
+
     public static <T> ApiResponse<T> error(ApiCode apiCode) {
         return ApiResponse.<T>builder()
                 .success(false)

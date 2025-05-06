@@ -18,7 +18,11 @@ public enum ApiCode {
     ORDER_NOT_FOUND(108, "Order not found"),
     PRODUCT_NOT_FOUND(109, "Product not found"),
     OUT_OF_STOCK(110, "Out of stock"),
-    PAYMENT_FAILED(111, "Payment failed")
+    PAYMENT_FAILED(111, "Payment failed"),
+    CHANGE_PASSWORD_FAILED(112, "Change password failed"),
+    CHANGE_PASSWORD_SUCCESS(113, "Change password success"),
+    DELETE_USER_SUCCESS(114, "Delete user success"),
+    REGISTER_SUCCESS(115, "Register success"),
     ;
 
     private final int code;

@@ -1,8 +1,10 @@
 package com.tien.service.impl;
 
 import com.tien.dto.request.ChangePasswordRequest;
+import com.tien.dto.request.CreateUserRequest;
 import com.tien.dto.request.UpdateProfileRequest;
 import com.tien.dto.response.UserProfileResponse;
+import com.tien.entity.Role;
 import com.tien.entity.User;
 import com.tien.exception.BusinessException;
 import com.tien.exception.ResourceNotFoundException;
@@ -23,8 +25,18 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public User createUser(User user) {
-        return userRepository.save(user);
+    public User createUser(CreateUserRequest request) {
+        User user = User.builder()
+                .username(request.getUsername())
+                .fullName(request.getFullName())
+                .email(request.getEmail())
+                .phoneNumber(request.getPhoneNumber())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .address(request.getAddress())
+                .role(Role.USER)
+                .build();
+
+      return userRepository.save(user);
     }
 
     @Override
