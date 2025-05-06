@@ -5,10 +5,11 @@ import lombok.Data;
 
 @Data
 @Builder
-public class UserResponse {
+public class CategoryResponse {
+
     private Long id;
+
     private String name;
-    private String email;
-    private String address;
-    private String avatar;
+
+    private String description;
 }

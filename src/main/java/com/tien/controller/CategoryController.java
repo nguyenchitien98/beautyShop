@@ -1,5 +1,6 @@
 package com.tien.controller;
 
+import com.tien.dto.request.CategoryRequest;
 import com.tien.entity.Category;
 import com.tien.payload.ApiResponse;
 import com.tien.service.CategoryService;
@@ -17,7 +18,7 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<?>> createCategory(@RequestBody Category category) {
+    public ResponseEntity<?> createCategory(@RequestBody CategoryRequest category) {
         Category newCategory = categoryService.createCategory(category);
         return ResponseEntity.ok(
                 ApiResponse.builder()

@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ApiResponse<T> {
     private boolean success;
+    private int code;        // << Thêm code
     private String message;
     private T data;
 }

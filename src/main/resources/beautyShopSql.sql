@@ -17,7 +17,9 @@ CREATE TABLE users (
 CREATE TABLE categories (
                             id BIGINT AUTO_INCREMENT PRIMARY KEY,
                             name VARCHAR(255) NOT NULL UNIQUE,
-                            description TEXT
+                            description TEXT,
+                            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 CREATE TABLE products (
@@ -49,6 +51,8 @@ CREATE TABLE order_details (
                                product_id BIGINT,
                                quantity INT NOT NULL,
                                price_each DECIMAL(10,2) NOT NULL,
+                               created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                               updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                                FOREIGN KEY (order_id) REFERENCES orders(id),
                                FOREIGN KEY (product_id) REFERENCES products(id)
 );
@@ -58,6 +62,8 @@ CREATE TABLE cart_items (
                             user_id BIGINT,
                             product_id BIGINT,
                             quantity INT NOT NULL,
+                            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                             FOREIGN KEY (user_id) REFERENCES users(id),
                             FOREIGN KEY (product_id) REFERENCES products(id)
 );
@@ -65,6 +71,8 @@ CREATE TABLE cart_items (
 CREATE TABLE refresh_tokens (
                                 id BIGINT AUTO_INCREMENT PRIMARY KEY,
                                 token VARCHAR(255),
+                                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                                 expiration_date DATETIME,
                                 user_id BIGINT,
                                 FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE

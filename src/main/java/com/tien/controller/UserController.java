@@ -2,12 +2,15 @@ package com.tien.controller;
 
 import com.tien.dto.request.ChangePasswordRequest;
 import com.tien.dto.request.UpdateProfileRequest;
-import com.tien.dto.response.UserResponse;
+import com.tien.dto.response.ApiResponseBuilder;
+import com.tien.dto.response.UserProfileResponse;
+import com.tien.payload.ApiCode;
 import com.tien.security.model.CustomUserDetails;
 import com.tien.entity.User;
 import com.tien.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -27,8 +30,15 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public User getUser(@PathVariable Long id) {
-        return userService.getUserById(id);
+    public ResponseEntity<?> getUserById(@PathVariable Long id) {
+        User user = userService.getUserById(id);
+
+        // Đoạn này không cần thiết, làm ở phía layer service rồi,Để lại để tham khảo thôi
+//        if (user == null) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+//                    .body(ApiResponseBuilder.error(ApiCode.USER_NOT_FOUND));
+//        }
+        return ResponseEntity.ok(ApiResponseBuilder.success(user));
     }
 
     @GetMapping
@@ -42,8 +52,8 @@ public class UserController {
     }
 
     @PutMapping("/profile")
-    public ResponseEntity<UserResponse> updateProfile(@Valid @RequestBody UpdateProfileRequest request, @AuthenticationPrincipal CustomUserDetails userDetails) {
-        UserResponse updatedUser = userService.updateProfile(userDetails.getId(), request);
+    public ResponseEntity<UserProfileResponse> updateProfile(@Valid @RequestBody UpdateProfileRequest request, @AuthenticationPrincipal CustomUserDetails userDetails) {
+        UserProfileResponse updatedUser = userService.updateProfile(userDetails.getId(), request);
         return ResponseEntity.ok(updatedUser);
     }
 

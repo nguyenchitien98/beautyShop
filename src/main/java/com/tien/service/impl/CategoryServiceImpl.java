@@ -1,5 +1,6 @@
 package com.tien.service.impl;
 
+import com.tien.dto.request.CategoryRequest;
 import com.tien.entity.Category;
 import com.tien.repository.CategoryRepository;
 import com.tien.service.CategoryService;
@@ -15,7 +16,10 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
 
     @Override
-    public Category createCategory(Category category) {
+    public Category createCategory(CategoryRequest categoryRequest) {
+        Category category = new Category();
+        category.setName(categoryRequest.getName());
+        category.setDescription(categoryRequest.getDescription());
         return categoryRepository.save(category);
     }
 

@@ -2,12 +2,15 @@ package com.tien.service.impl;
 
 import com.tien.dto.request.ChangePasswordRequest;
 import com.tien.dto.request.UpdateProfileRequest;
-import com.tien.dto.response.UserResponse;
-import com.tien.entity.Role;
+import com.tien.dto.response.UserProfileResponse;
 import com.tien.entity.User;
+import com.tien.exception.BusinessException;
+import com.tien.exception.ResourceNotFoundException;
+import com.tien.payload.ApiCode;
 import com.tien.repository.UserRepository;
 import com.tien.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,7 +20,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-//    private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public User createUser(User user) {
@@ -27,7 +30,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserById(Long id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new BusinessException(ApiCode.USER_NOT_FOUND));
     }
 
     @Override
@@ -41,9 +44,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponse updateProfile(Long userId, UpdateProfileRequest request) {
+    public UserProfileResponse updateProfile(Long userId, UpdateProfileRequest request) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         user.setFullName(request.getName());
         user.setEmail(request.getEmail());
@@ -52,7 +55,7 @@ public class UserServiceImpl implements UserService {
 
         userRepository.save(user);
 
-        return UserResponse.builder()
+        return UserProfileResponse.builder()
                 .id(user.getId())
                 .name(user.getFullName())
                 .email(user.getEmail())
@@ -64,13 +67,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public void changePassword(Long userId, ChangePasswordRequest request) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new BusinessException(ApiCode.USER_NOT_FOUND));
 
-//        if (!passwordEncoder.matches(request.getOldPassword(), user.getPassword())) {
-//            throw new RuntimeException("Mật khẩu cũ không chính xác");
-//        }
-//
-//        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        if (!passwordEncoder.matches(request.getOldPassword(), user.getPassword())) {
+            throw new RuntimeException("Mật khẩu cũ không chính xác");
+        }
+
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
         userRepository.save(user);
     }
 }
