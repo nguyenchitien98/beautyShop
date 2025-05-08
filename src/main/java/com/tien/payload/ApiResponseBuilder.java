@@ -28,6 +28,15 @@ public class ApiResponseBuilder {
                 .build();
     }
 
+    public static <T> ApiResponse<T> success(String customMessage) {
+        return ApiResponse.<T>builder()
+                .success(true)
+                .code(9999)
+                .message(customMessage)
+                .data(null)
+                .build();
+    }
+
     public static <T> ApiResponse<T> error(ApiCode apiCode) {
         return ApiResponse.<T>builder()
                 .success(false)

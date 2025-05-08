@@ -62,7 +62,8 @@ public class AuthController {
 
         userRepository.save(user);
 
-        return ResponseEntity.ok("User registered successfully!");
+        return ResponseEntity.ok(ApiResponseBuilder.success("User registered successfully!"));
+//        return ResponseEntity.ok("User registered successfully!");
     }
 
     @PostMapping("/login")
@@ -95,12 +96,13 @@ public class AuthController {
                     "id", userDetails.getId(),
                     "email", userDetails.getEmail()
             );
-            return ResponseEntity.ok(
-                    ApiResponse.builder()
-                    .success(true)
-                    .message("Login successful")
-                    .data(data)
-                    .build());
+            return ResponseEntity.ok(ApiResponseBuilder.success(ApiCode.LOGIN_SUCCESS,data));
+//            return ResponseEntity.ok(
+//                    ApiResponse.builder()
+//                    .success(true)
+//                    .message("Login successful")
+//                    .data(data)
+//                    .build());
         } catch (AuthenticationException e) {
             throw new RuntimeException("Login thất bại: " + e.getMessage());
         }
@@ -117,10 +119,12 @@ public class AuthController {
 
         // Tạo mới access token
         String newAccessToken = jwtUtil.generateToken(userId, email);
+        Object data = Map.of("accessToken", newAccessToken);
 
-        return ResponseEntity.ok(Map.of(
-                "accessToken", newAccessToken
-        ));
+        return ResponseEntity.ok(ApiResponseBuilder.success(data));
+//        return ResponseEntity.ok(Map.of(
+//                "accessToken", newAccessToken
+//        ));
     }
 
     @PostMapping("/logout")
@@ -142,6 +146,8 @@ public class AuthController {
             refreshTokenService.updateRefreshToken(refreshToken);
 
         }
-        return ResponseEntity.ok(Map.of("message", "Logout successful"));
+
+        return ResponseEntity.ok(ApiResponseBuilder.success("Logout successful"));
+//        return ResponseEntity.ok(Map.of("message", "Logout successful"));
     }
 }

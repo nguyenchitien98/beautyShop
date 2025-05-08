@@ -2,9 +2,11 @@ package com.tien.controller;
 
 import com.tien.dto.request.ProductRequest;
 import com.tien.entity.Product;
+import com.tien.payload.ApiResponseBuilder;
 import com.tien.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,22 +19,26 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping
-    public Product createProduct(@Valid @RequestBody ProductRequest product) {
-        return productService.createProduct(product);
+    public ResponseEntity<?> createProduct(@Valid @RequestBody ProductRequest productRequest) {
+        Product product = productService.createProduct(productRequest);
+        return ResponseEntity.ok(ApiResponseBuilder.success(product));
     }
 
     @GetMapping("/{id}")
-    public Product getProduct(@PathVariable Long id) {
-        return productService.getProductById(id);
+    public ResponseEntity<?> getProduct(@PathVariable Long id) {
+        Product product = productService.getProductById(id);
+        return ResponseEntity.ok(ApiResponseBuilder.success(product));
     }
 
     @GetMapping
-    public List<Product> getAllProducts() {
-        return productService.getAllProducts();
+    public ResponseEntity<?> getAllProducts() {
+        List<Product> products = productService.getAllProducts();
+        return ResponseEntity.ok(ApiResponseBuilder.success(products));
     }
 
     @GetMapping("/category/{categoryId}")
-    public List<Product> getProductsByCategory(@PathVariable Long categoryId) {
-        return productService.getProductsByCategoryId(categoryId);
+    public ResponseEntity<?> getProductsByCategory(@PathVariable Long categoryId) {
+        List<Product> productList = productService.getProductsByCategoryId(categoryId);
+        return ResponseEntity.ok(ApiResponseBuilder.success(productList));
     }
 }
