@@ -88,4 +88,19 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(request.getNewPassword()));
         userRepository.save(user);
     }
+
+    @Override
+    public UserProfileResponse getUserProfile(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BusinessException(ApiCode.USER_NOT_FOUND));
+
+        return UserProfileResponse.builder()
+                .id(user.getId())
+                .name(user.getFullName())
+                .email(user.getEmail())
+                .address(user.getAddress())
+                .avatar(user.getAvatar())
+                .phoneNumber(user.getPhoneNumber())
+                .build();
+    }
 }

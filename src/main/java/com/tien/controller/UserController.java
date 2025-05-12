@@ -6,6 +6,7 @@ import com.tien.dto.request.UpdateProfileRequest;
 import com.tien.dto.response.UserProfileResponse;
 import com.tien.payload.ApiCode;
 import com.tien.payload.ApiResponseBuilder;
+import com.tien.security.model.CurrentUser;
 import com.tien.security.model.CustomUserDetails;
 import com.tien.entity.User;
 import com.tien.service.UserService;
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.attribute.UserPrincipal;
 import java.util.List;
 
 @RestController
@@ -66,5 +68,12 @@ public class UserController {
         userService.changePassword(userDetails.getId(), request);
         return ResponseEntity.ok(ApiResponseBuilder.success(ApiCode.CHANGE_PASSWORD_SUCCESS));
 //        return ResponseEntity.ok("Đổi mật khẩu thành công!");
+    }
+
+//    @CurrentUser Là nó tự lấy User từ SecurityContext ra.
+    @GetMapping("/me")
+    public ResponseEntity<?> getCurrentUser(@CurrentUser CustomUserDetails customUserDetails) {
+        UserProfileResponse profile = userService.getUserProfile(customUserDetails.getId());
+        return ResponseEntity.ok(ApiResponseBuilder.success(ApiCode.GET_CURRENT_USER,profile));
     }
 }

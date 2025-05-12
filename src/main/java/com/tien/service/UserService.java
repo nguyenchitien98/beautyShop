@@ -15,4 +15,5 @@ public interface UserService {
     void deleteUser(Long id);
     UserProfileResponse updateProfile(Long userId, UpdateProfileRequest request);
     void changePassword(Long userId, ChangePasswordRequest request);
+    UserProfileResponse getUserProfile(Long userId);
 }

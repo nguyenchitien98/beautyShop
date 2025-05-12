@@ -62,7 +62,8 @@ public class AuthController {
 
         userRepository.save(user);
 
-        return ResponseEntity.ok(ApiResponseBuilder.success("User registered successfully!"));
+        return ResponseEntity.ok(ApiResponseBuilder.success(ApiCode.REGISTER_SUCCESS));
+//        return ResponseEntity.ok(ApiResponseBuilder.success("User registered successfully!"));
 //        return ResponseEntity.ok("User registered successfully!");
     }
 

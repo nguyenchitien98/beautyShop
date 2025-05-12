@@ -22,10 +22,11 @@ public enum ApiCode {
     CHANGE_PASSWORD_FAILED(112, "Change password failed"),
     CHANGE_PASSWORD_SUCCESS(113, "Change password success"),
     DELETE_USER_SUCCESS(114, "Delete user success"),
-    REGISTER_SUCCESS(115, "Register success"),
+    REGISTER_SUCCESS(115, "User registered successfully"),
     REGISTER_SUCCESS_CATEGORY(116, "Created category successfully"),
     GET_ALL_CATEGORIES(117, "Get All Categories"),
     LOGIN_SUCCESS(118, "Login successful"),
+    GET_CURRENT_USER(118, "Get current user profile successfully"),
     ;
 
     private final int code;
