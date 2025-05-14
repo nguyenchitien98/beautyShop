@@ -4,9 +4,6 @@ import com.tien.security.entity.RefreshToken;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
 @Entity
 @Table(name = "users")
 @Data
@@ -44,8 +41,5 @@ public class User extends BaseEntity{
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)  // Quan hệ một-một với RefreshToken
     private RefreshToken refreshToken;  // Mỗi User có một RefreshToken duy nhất
 
-//    private LocalDateTime createdAt;
-//
-//    private LocalDateTime updatedAt;
 
 }
