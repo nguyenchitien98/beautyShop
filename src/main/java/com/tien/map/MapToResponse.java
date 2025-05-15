@@ -2,11 +2,15 @@ package com.tien.map;
 
 import com.tien.dto.response.CategoryResponse;
 import com.tien.dto.response.ProductResponse;
+import com.tien.dto.response.RatingResponse;
 import com.tien.entity.Category;
 import com.tien.entity.Product;
+import com.tien.entity.Rating;
+import org.springframework.stereotype.Component;
 
+@Component
 public class MapToResponse {
-    private ProductResponse mapToResponse(Product product) {
+    public ProductResponse mapToProductResponse(Product product) {
         return ProductResponse.builder()
                 .id(product.getId())
                 .name(product.getName())
@@ -18,11 +22,22 @@ public class MapToResponse {
                 .build();
     }
 
-    private CategoryResponse mapToResponse(Category category) {
+    public CategoryResponse mapToCategoryResponse(Category category) {
         return CategoryResponse
                 .builder().id(category.getId())
                 .name(category.getName())
                 .description(category.getDescription())
+                .build();
+    }
+
+    public RatingResponse convertToRatingResponse(Rating r) {
+        return RatingResponse.builder()
+                .id(r.getId())
+                .rating(r.getRating())
+                .comment(r.getComment())
+                .userFullName(r.getUser().getFullName())
+                .avatar(r.getUser().getAvatar())
+                .createdAt(r.getCreatedAt())
                 .build();
     }
 }

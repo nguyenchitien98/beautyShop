@@ -3,7 +3,9 @@ package com.tien.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Entity
 @Table(name = "products")
@@ -32,7 +34,7 @@ public class Product extends BaseEntity{
     @JoinColumn(name = "category_id")
     private Category category;
 
-//    private LocalDateTime createdAt;
-//
-//    private LocalDateTime updatedAt;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Rating> ratings = new ArrayList<>();
+
 }

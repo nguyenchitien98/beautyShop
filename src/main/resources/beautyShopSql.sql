@@ -68,6 +68,18 @@ CREATE TABLE cart_items (
                             FOREIGN KEY (product_id) REFERENCES products(id)
 );
 
+CREATE TABLE ratings (
+                         id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                         rating INT CHECK (rating BETWEEN 1 AND 5),
+                         comment TEXT,
+                         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                         updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                         user_id BIGINT NOT NULL,
+                         product_id BIGINT,
+                         FOREIGN KEY (user_id) REFERENCES users(id),
+                         FOREIGN KEY (product_id) REFERENCES products(id)
+);
+
 CREATE TABLE refresh_tokens (
                                 id BIGINT AUTO_INCREMENT PRIMARY KEY,
                                 token VARCHAR(255),
