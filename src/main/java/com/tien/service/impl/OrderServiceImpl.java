@@ -163,7 +163,7 @@ public class OrderServiceImpl implements OrderService {
     private OrderResponse mapToOrderResponse(Order order) {
         return OrderResponse.builder()
                 .id(order.getId())
-                .totalPrice(order.getTotalAmount())
+                .totalAmount(order.getTotalAmount())
                 .status(order.getStatus())
                 .createdAt(order.getCreatedAt())
                 .build();

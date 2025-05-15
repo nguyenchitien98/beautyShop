@@ -1,10 +1,11 @@
 package com.tien.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "products")
+@Table(name = "ratings")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,9 +25,11 @@ public class Rating extends BaseEntity {
     // Nếu có User, liên kết với người dùng đánh giá
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference // Dùng để oại bỏ vòng lặp vô hạn (@JsonBackReference: Phía con — bị bỏ qua khi serialize.)
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
+    @JsonBackReference // Dùng để oại bỏ vòng lặp vô hạn (@JsonBackReference: Phía con — bị bỏ qua khi serialize.)
     private Product product;
 }

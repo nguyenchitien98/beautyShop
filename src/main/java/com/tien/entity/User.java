@@ -1,5 +1,6 @@
 package com.tien.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.tien.security.entity.RefreshToken;
 import jakarta.persistence.*;
 import lombok.*;
@@ -45,5 +46,6 @@ public class User extends BaseEntity{
     private RefreshToken refreshToken;  // Mỗi User có một RefreshToken duy nhất
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference // Dùng để loại bỏ vòng lặp vô hạn (@JsonManagedReference: Phía cha (forward reference) — sẽ được serialize.)
     private List<Rating> ratings = new ArrayList<>();
 }

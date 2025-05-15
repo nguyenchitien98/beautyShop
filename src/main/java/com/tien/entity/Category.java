@@ -3,7 +3,8 @@ package com.tien.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "categories")
@@ -22,4 +23,8 @@ public class Category extends BaseEntity{
     private String name;
 
     private String description;
+
+    // Quan hệ 1-nhiều với Product
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Product> products = new ArrayList<>();
 }

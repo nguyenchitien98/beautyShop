@@ -4,7 +4,7 @@ import com.tien.dto.response.RatingResponse;
 import com.tien.entity.Product;
 import com.tien.entity.Rating;
 import com.tien.entity.User;
-import com.tien.map.MapToResponse;
+import com.tien.map.RatingMapper;
 import com.tien.repository.ProductRepository;
 import com.tien.repository.RatingRepository;
 import com.tien.service.RatingService;
@@ -20,7 +20,6 @@ public class RatingServiceImpl implements RatingService {
     private final RatingRepository ratingRepository;
     private final ProductRepository productRepository;
     private final AuthUtil authUtil;
-    private final MapToResponse mapToResponse;
 
     @Override
     public RatingResponse addRating(Long productId, Integer ratingValue, String comment) {
@@ -39,13 +38,13 @@ public class RatingServiceImpl implements RatingService {
 
         Rating saved = ratingRepository.save(rating);
 
-        return mapToResponse.convertToRatingResponse(saved);
+        return RatingMapper.toResponse(saved);
     }
 
     @Override
     public List<RatingResponse> getRatingsForProduct(Long productId) {
         return ratingRepository.findByProductId(productId).stream()
-                .map(mapToResponse::convertToRatingResponse)
+                .map(RatingMapper::toResponse)
                 .toList();
     }
 

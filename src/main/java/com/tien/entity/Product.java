@@ -1,5 +1,6 @@
 package com.tien.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -35,6 +36,7 @@ public class Product extends BaseEntity{
     private Category category;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference // Dùng để loại bỏ vòng lặp vô hạn (@JsonManagedReference: Phía cha (forward reference) — sẽ được serialize.)
     private List<Rating> ratings = new ArrayList<>();
 
 }

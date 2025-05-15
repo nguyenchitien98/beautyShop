@@ -1,7 +1,9 @@
 package com.tien.controller;
 
 import com.tien.dto.request.ProductRequest;
+import com.tien.dto.response.ProductResponse;
 import com.tien.entity.Product;
+import com.tien.map.ProductMapper;
 import com.tien.payload.ApiResponseBuilder;
 import com.tien.service.ProductService;
 import jakarta.validation.Valid;
@@ -27,25 +29,29 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<?> createProduct(@Valid @RequestBody ProductRequest productRequest) {
         Product product = productService.createProduct(productRequest);
-        return ResponseEntity.ok(ApiResponseBuilder.success(product));
+        ProductResponse productResponse = ProductMapper.toResponse(product);
+        return ResponseEntity.ok(ApiResponseBuilder.success(productResponse));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getProduct(@PathVariable Long id) {
         Product product = productService.getProductById(id);
-        return ResponseEntity.ok(ApiResponseBuilder.success(product));
+        ProductResponse productResponse = ProductMapper.toResponse(product);
+        return ResponseEntity.ok(ApiResponseBuilder.success(productResponse));
     }
 
     @GetMapping
     public ResponseEntity<?> getAllProducts() {
         List<Product> products = productService.getAllProducts();
-        return ResponseEntity.ok(ApiResponseBuilder.success(products));
+        List<ProductResponse> productResponses = ProductMapper.toResponseList(products);
+        return ResponseEntity.ok(ApiResponseBuilder.success(productResponses));
     }
 
     @GetMapping("/category/{categoryId}")
     public ResponseEntity<?> getProductsByCategory(@PathVariable Long categoryId) {
         List<Product> productList = productService.getProductsByCategoryId(categoryId);
-        return ResponseEntity.ok(ApiResponseBuilder.success(productList));
+        List<ProductResponse> productResponseList = ProductMapper.toResponseList(productList);
+        return ResponseEntity.ok(ApiResponseBuilder.success(productResponseList));
     }
 
     @PostMapping("/upload")
