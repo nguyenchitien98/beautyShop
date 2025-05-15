@@ -16,10 +16,20 @@ public class ProductResponse {
     private String name;
     private String description;
     private Double price;
+    private Double discountPrice;
     private Integer stockQuantity;
     private String imageUrl;
+    private String brand;
+    private String origin;
+    private String skinType;
+    private String weightOrVolume;
+//    private String usageInstructions;
+//    private String ingredients;
+//    private Boolean isAvailable;
+    private Boolean isFeatured;
+//    private String videoUrl;
+    private List<String> tags;
     private Long categoryId;
     private String categoryName;
-
-    private List<RatingResponse> ratings;
+    private Double averageRating;
 }

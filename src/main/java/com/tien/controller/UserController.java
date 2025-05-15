@@ -4,6 +4,8 @@ import com.tien.dto.request.ChangePasswordRequest;
 import com.tien.dto.request.CreateUserRequest;
 import com.tien.dto.request.UpdateProfileRequest;
 import com.tien.dto.response.UserProfileResponse;
+import com.tien.dto.response.UserResponse;
+import com.tien.map.UserMapper;
 import com.tien.payload.ApiCode;
 import com.tien.payload.ApiResponseBuilder;
 import com.tien.security.model.CurrentUser;
@@ -29,25 +31,28 @@ public class UserController {
     @PostMapping
     public ResponseEntity<?> createUser(@Valid @RequestBody CreateUserRequest userRequest) {
         User user = userService.createUser(userRequest);
-        return ResponseEntity.ok(ApiResponseBuilder.success(user));
+        UserResponse userResponse = UserMapper.toResponse(user);
+        return ResponseEntity.ok(ApiResponseBuilder.success(userResponse));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getUserById(@PathVariable Long id) {
         User user = userService.getUserById(id);
+        UserResponse userResponse = UserMapper.toResponse(user);
 
         // Đoạn này không cần thiết, làm ở phía layer service rồi,Để lại để tham khảo thôi
 //        if (user == null) {
 //            return ResponseEntity.status(HttpStatus.NOT_FOUND)
 //                    .body(ApiResponseBuilder.error(ApiCode.USER_NOT_FOUND));
 //        }
-        return ResponseEntity.ok(ApiResponseBuilder.success(user));
+        return ResponseEntity.ok(ApiResponseBuilder.success(userResponse));
     }
 
     @GetMapping
     public ResponseEntity<?> getAllUsers() {
         List<User> userList = userService.getAllUsers();
-        return ResponseEntity.ok(ApiResponseBuilder.success(userList));
+        List<UserResponse> userResponseList = UserMapper.toResponseList(userList);
+        return ResponseEntity.ok(ApiResponseBuilder.success(userResponseList));
     }
 
     @DeleteMapping("/{id}")

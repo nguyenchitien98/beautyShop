@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,7 +35,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getProduct(@PathVariable Long id) {
+    public ResponseEntity<?> getProductById(@PathVariable Long id) {
         Product product = productService.getProductById(id);
         ProductResponse productResponse = ProductMapper.toResponse(product);
         return ResponseEntity.ok(ApiResponseBuilder.success(productResponse));
@@ -61,5 +62,61 @@ public class ProductController {
         String imageUrl = productService.uploadImage(file);
         return ResponseEntity.ok(Map.of("imageUrl", imageUrl));
 
+    }
+
+    @GetMapping("/page")
+    public ResponseEntity<?> getAllProductsForPage(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        Page<ProductResponse> productResponses = productService.getAllProductsForPage(page, size);
+        return ResponseEntity.ok(ApiResponseBuilder.success(productResponses));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateProduct(@PathVariable Long id, @Valid @RequestBody ProductRequest dto) {
+        ProductResponse productResponse = productService.updateProduct(id, dto);
+        return ResponseEntity.ok(ApiResponseBuilder.success(productResponse));
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteProduct(@PathVariable Long id) {
+        productService.deleteProduct(id);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> searchProducts(@RequestParam String keyword) {
+        List<ProductResponse> productResponses = productService.searchProducts(keyword);
+        return ResponseEntity.ok(ApiResponseBuilder.success(productResponses));
+    }
+
+    @GetMapping("/featured")
+    public ResponseEntity<?> getFeaturedProducts() {
+        List<ProductResponse> productResponses = productService.getFeaturedProducts();
+        return ResponseEntity.ok(ApiResponseBuilder.success(productResponses));
+    }
+
+    @GetMapping("/top-rated")
+    public ResponseEntity<?> getTopRatedProducts() {
+        List<ProductResponse> productResponses = productService.getTopRatedProducts();
+        return ResponseEntity.ok(ApiResponseBuilder.success(productResponses));
+    }
+
+    @GetMapping("/latest")
+    public ResponseEntity<?> getLatestProducts() {
+        List<ProductResponse> productResponses = productService.getLatestProducts();
+        return ResponseEntity.ok(ApiResponseBuilder.success(productResponses));
+    }
+
+    @GetMapping("/filter")
+    public ResponseEntity<?> filterProducts(
+            @RequestParam(required = false) String brand,
+            @RequestParam(required = false) String skinType,
+            @RequestParam(required = false) Double minPrice,
+            @RequestParam(required = false) Double maxPrice,
+            @RequestParam(required = false) Long categoryId
+    ) {
+        List<ProductResponse> productResponses = productService.filterProducts(brand, skinType, minPrice, maxPrice, categoryId);
+        return ResponseEntity.ok(ApiResponseBuilder.success(productResponses));
     }
 }

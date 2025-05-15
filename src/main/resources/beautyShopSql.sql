@@ -24,15 +24,31 @@ CREATE TABLE categories (
 
 CREATE TABLE products (
                           id BIGINT AUTO_INCREMENT PRIMARY KEY,
-                          name VARCHAR(255) NOT NULL,
+                          name VARCHAR(255),
                           description TEXT,
-                          price DECIMAL(10,2) NOT NULL,
-                          stock_quantity INT NOT NULL,
-                          image_url VARCHAR(255),
+                          price DOUBLE,
+                          discount_price DOUBLE,
+                          stock_quantity INT,
+                          image_url VARCHAR(500),
+                          brand VARCHAR(255),
+                          origin VARCHAR(255),
+                          skin_type VARCHAR(255),
+                          weight_or_volume VARCHAR(100),
+--                           usage_instructions TEXT,
+--                           ingredients TEXT,
+--                           is_available BOOLEAN,
+                          is_featured BOOLEAN,
+--                           video_url VARCHAR(500),
                           category_id BIGINT,
                           created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                           updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                           FOREIGN KEY (category_id) REFERENCES categories(id)
+);
+
+CREATE TABLE product_tags (
+                              product_id BIGINT NOT NULL,
+                              tags VARCHAR(255),
+                              FOREIGN KEY (product_id) REFERENCES products(id)
 );
 
 CREATE TABLE orders (

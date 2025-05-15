@@ -1,5 +1,6 @@
 package com.tien.map;
 
+import com.tien.dto.request.ProductRequest;
 import com.tien.dto.response.ProductResponse;
 import com.tien.entity.Product;
 
@@ -18,13 +19,22 @@ public class ProductMapper {
                 .name(product.getName())
                 .description(product.getDescription())
                 .price(product.getPrice())
+                .discountPrice(product.getDiscountPrice())
                 .stockQuantity(product.getStockQuantity())
                 .imageUrl(product.getImageUrl())
+                .brand(product.getBrand())
+                .origin(product.getOrigin())
+                .skinType(product.getSkinType())
+                .weightOrVolume(product.getWeightOrVolume())
+//                .usageInstructions(product.getUsageInstructions()) // Mấy đoạn này sẽ nâng cấp sau
+//                .ingredients(product.getIngredients()) // Mấy đoạn này sẽ nâng cấp sau
+//                .isAvailable(product.getIsAvailable()) // Mấy đoạn này sẽ nâng cấp sau
+                .isFeatured(product.getIsFeatured())
+//                .videoUrl(product.getVideoUrl()) // Mấy đoạn này sẽ nâng cấp sau
+                .tags(product.getTags())
                 .categoryId(product.getCategory() != null ? product.getCategory().getId() : null)
                 .categoryName(product.getCategory() != null ? product.getCategory().getName() : null)
-                .ratings(product.getRatings().stream()
-                        .map(RatingMapper::toResponse)
-                        .collect(Collectors.toList()))
+                .averageRating(product.getAverageRating())
                 .build();
     }
 
@@ -32,5 +42,30 @@ public class ProductMapper {
         return products.stream()
                 .map(ProductMapper::toResponse)
                 .collect(Collectors.toList());
+    }
+
+    // ✅ Chuyển từ DTO -> entity
+    public static Product toEntity(ProductRequest dto) {
+        if (dto == null) return null;
+
+        return Product.builder()
+                .name(dto.getName())
+                .description(dto.getDescription())
+                .price(dto.getPrice())
+                .discountPrice(dto.getDiscountPrice())
+                .stockQuantity(dto.getStockQuantity())
+                .imageUrl(dto.getImageUrl())
+                .brand(dto.getBrand())
+                .origin(dto.getOrigin())
+                .skinType(dto.getSkinType())
+                .weightOrVolume(dto.getWeightOrVolume())
+//                .usageInstructions(dto.getUsageInstructions()) // Mấy đoạn này sẽ nâng cấp sau
+//                .ingredients(dto.getIngredients()) // Mấy đoạn này sẽ nâng cấp sau
+//                .isAvailable(dto.getIsAvailable()) // Mấy đoạn này sẽ nâng cấp sau
+                .isFeatured(dto.getIsFeatured())
+//                .videoUrl(dto.getVideoUrl()) // Mấy đoạn này sẽ nâng cấp sau
+                .tags(dto.getTags())
+                // Chưa set category (vì cần lấy từ DB)
+                .build();
     }
 }
